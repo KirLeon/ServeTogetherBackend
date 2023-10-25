@@ -1,0 +1,17 @@
+spring:
+  application:
+    name: serve-together-service
+  datasource:
+    url: jdbc:postgresql://localhost:5432/postgres
+    #    url: jdbc:postgresql://db:5432/postgres
+    # url jdbc:postgresql://db:5432/postgres is for deploying with docker
+    username: admin
+    password: together4892
+    driver-class-name: org.postgresql.Driver
+  flyway:
+    url: jdbc:postgresql://localhost:5432/postgres
+    #    url: jdbc:postgresql://db:5432/postgres
+    # url jdbc:postgresql://db:5432/postgres is for deploying with docker
+    user: admin
+    password: together4892
+    locations: classpath:db/migration
