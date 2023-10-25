@@ -15,3 +15,7 @@ spring:
     user: admin
     password: together4892
     locations: classpath:db/migration
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
