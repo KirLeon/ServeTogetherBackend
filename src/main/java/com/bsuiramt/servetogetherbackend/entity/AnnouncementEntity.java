@@ -1,12 +1,14 @@
 package com.bsuiramt.servetogetherbackend.entity;
 
 import jakarta.persistence.*;
+import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.Date;
 
 @Entity
-@Table
+@Table(name = "announcements")
+@Data
 @NoArgsConstructor
 public class AnnouncementEntity {
 	

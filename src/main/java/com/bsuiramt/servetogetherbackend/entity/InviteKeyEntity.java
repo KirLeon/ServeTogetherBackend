@@ -7,15 +7,13 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "volunteer_groups")
+@Table(name = "invite_keys")
 @Data
 @NoArgsConstructor
-public class VolunteerGroupEntity {
+public class InviteKeyEntity {
 	
 	@Id
-	private String groupName;
+	private String code;
 	
-	private Long activeAnnQuantity;
-	
-	private Long pendingAnnQuantity;
+	private boolean activated;
 }
