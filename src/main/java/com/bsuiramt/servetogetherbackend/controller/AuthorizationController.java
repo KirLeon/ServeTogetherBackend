@@ -12,10 +12,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping(value = "authorize")
 public class AuthorizationController {
-	
-	@Autowired
-	GoogleCredentials googleCredentials;
-	
 	@PostMapping
 	public ResponseEntity<Object> authorizeUser(@RequestBody UserAuthorizationRequest authorizationRequest) {
 		return authorizationRequest.password().length() < 8 ? ResponseEntity.ok("User has been successfully authorized")

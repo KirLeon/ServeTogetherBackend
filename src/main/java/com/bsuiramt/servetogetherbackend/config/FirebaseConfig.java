@@ -13,7 +13,7 @@ public class FirebaseConfig {
 	@Bean(name = "googleCredentials")
 	public GoogleCredentials googleCredentials() throws IOException {
 		try (InputStream credentialsReader = FirebaseConfig.class.getClassLoader()
-				.getResourceAsStream("servetogether-firebase-credentials.json")) {
+				.getResourceAsStream("confidential/servetogether-firebase-credentials.json")) {
 			return GoogleCredentials.fromStream(credentialsReader);
 		}
 	}
