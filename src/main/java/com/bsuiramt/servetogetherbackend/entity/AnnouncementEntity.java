@@ -22,7 +22,7 @@ public class AnnouncementEntity {
 	private Date creationDate;
 	private Date expirationDate;
 	@ManyToOne
-	private AdminEntity author;
+	private AdminEntity owner;
 	@ManyToOne
 	private VolunteerGroupEntity volunteerGroup;
 }

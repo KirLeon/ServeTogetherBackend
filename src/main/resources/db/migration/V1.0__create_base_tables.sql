@@ -1,21 +1,28 @@
-CREATE TABLE "market_items"
+CREATE TABLE IF NOT EXISTS "market_items"
 (
     "id"       BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
-    "title"    TEXT   NOT NULL,
-    "price"    BIGINT NOT NULL,
-    "img_path" TEXT   NOT NULL
+    "title"    TEXT NOT NULL,
+    "price"    INT  NOT NULL,
+    "img_path" TEXT NOT NULL
 );
 
-CREATE TABLE "volunteers"
+CREATE TABLE IF NOT EXISTS "account_info"
 (
-    "username"     TEXT PRIMARY KEY,
-    "password"     TEXT   NOT NULL,
-    "phone_number" TEXT   NOT NULL UNIQUE,
-    "group_name"   TEXT,
-    "coins"        BIGINT NOT NULL
+    "id"           BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+    "username"     TEXT NOT NULL UNIQUE,
+    "password"     TEXT NOT NULL,
+    "phone_number" TEXT NOT NULL UNIQUE
 );
 
-CREATE TABLE "volunteer_groups"
+CREATE TABLE IF NOT EXISTS "volunteers"
+(
+    "UID"        BIGINT GENERATED ALWAYS AS IDENTITY,
+    "info_id"    BIGINT REFERENCES "account_info" ("id"),
+    "group_name" TEXT,
+    "coins"      INT NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS "volunteer_groups"
 (
     "group_name"                     TEXT PRIMARY KEY,
     "active_announcements_quantity"  INTEGER NOT NULL,
@@ -25,14 +32,13 @@ CREATE TABLE "volunteer_groups"
 ALTER TABLE "volunteers"
     ADD FOREIGN KEY ("group_name") REFERENCES "volunteer_groups" (group_name);
 
-CREATE TABLE "administrators"
+CREATE TABLE IF NOT EXISTS "administrators"
 (
-    "username"     TEXT PRIMARY KEY,
-    "password"     TEXT NOT NULL,
-    "phone_number" TEXT NOT NULL
+    "UID"     BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+    "info_id" BIGINT REFERENCES "account_info" ("id")
 );
 
-CREATE TABLE "announcements"
+CREATE TABLE IF NOT EXISTS "announcements"
 (
     "id"               BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
     "title"            TEXT   NOT NULL,
@@ -41,20 +47,21 @@ CREATE TABLE "announcements"
     "reward"           BIGINT NOT NULL,
     "creation_date"    DATE DEFAULT current_date,
     "expiration_date"  DATE DEFAULT current_date + INTERVAL '5 days',
-    "author"           TEXT   NOT NULL,
+    "owner"           BIGINT NOT NULL,
     "volunteer_groups" TEXT   NULL
 );
 
-CREATE TABLE "invite_keys"
+CREATE TABLE IF NOT EXISTS "invite_keys"
 (
     "code"      TEXT PRIMARY KEY,
     "activated" BOOLEAN DEFAULT FALSE
 );
 
 ALTER TABLE "announcements"
-    ADD FOREIGN KEY ("author") REFERENCES "administrators" ("username");
+    ADD FOREIGN KEY ("owner") REFERENCES "administrators" ("UID");
 
 ALTER TABLE "announcements"
     ADD FOREIGN KEY ("volunteer_groups") REFERENCES "volunteer_groups" ("group_name");
 
 CREATE INDEX idx_announcements_title ON announcements ("title");
+CREATE INDEX idx_account_info_username ON account_info ("username");

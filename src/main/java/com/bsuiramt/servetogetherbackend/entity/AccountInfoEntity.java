@@ -1,24 +1,24 @@
 package com.bsuiramt.servetogetherbackend.entity;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Min;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "market_items")
+@Table(name = "account_info")
 @Data
 @NoArgsConstructor
-public class MarketItemEntity {
-	
+public class AccountInfoEntity {
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
-	private String title;
+	@Column(unique = true)
+	private String username;
 	
-	@Min(value = 0, message = "Price should not be less than zero")
-	private Integer price;
+	private String password;
 	
-	private String img_path;
+	@Column(unique = true)
+	private String phoneNumber;
 }

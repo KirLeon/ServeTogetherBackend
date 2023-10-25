@@ -1,8 +1,6 @@
 package com.bsuiramt.servetogetherbackend.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -13,9 +11,9 @@ import lombok.NoArgsConstructor;
 public class AdminEntity {
 	
 	@Id
-	private String username;
+	@Column(name = "UID")
+	private Long uid;
 	
-	private String password;
-	
-	private String phoneNumber;
+	@OneToOne
+	private AccountInfoEntity info;
 }

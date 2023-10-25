@@ -2,6 +2,7 @@ package com.bsuiramt.servetogetherbackend.entity;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Min;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -9,21 +10,21 @@ import lombok.NoArgsConstructor;
 @Table(name = "volunteers")
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
 public class VolunteerEntity {
 	
 	@Id
-	private String username;
+	@Column(name = "UID")
+	private Long uid;
 	
-	private String password;
-	
-	@Column(unique = true)
-	private String phoneNumber;
+	@OneToOne
+	private AccountInfoEntity info;
 	
 	@JoinColumn(name = "group_name")
 	@ManyToOne
 	private VolunteerGroupEntity group;
 	
 	@Min(value = 0, message = "Coin amount should not be less than zero")
-	private Long coins;
+	private Integer coins;
 	
 }
