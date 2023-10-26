@@ -52,6 +52,8 @@ public class HeaderBasedAuthorizationFilter extends OncePerRequestFilter {
 				} else {
 					sendErrorResponse(response, "Invalid access level", 403);
 				}
+			} else if (requestUrl.startsWith("/api/v1/groups") && userRole == UserRole.ADMIN) {
+				sendErrorResponse(response, "Not for admins", 403);
 			} else {
 				filterChain.doFilter(request, response);
 			}
