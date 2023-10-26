@@ -33,24 +33,6 @@ public class AdminController {
 		}
 	}
 	
-	@GetMapping("/announcement")
-	public ResponseEntity<AnnouncementDTO> getAnnouncement(@RequestParam Long id) {
-		
-		return announcementService.getAnnouncement(id)
-				.map(ResponseEntity::ok)
-				.orElseGet(() -> ResponseEntity.notFound().build());
-	}
-	
-	@GetMapping("/announcement/title")
-	public ResponseEntity<List<AnnouncementDTO>> getAnnouncementsByTitle(@RequestParam String title) {
-		return ResponseEntity.ok(announcementService.getAllAnnouncementsByTitle(title));
-	}
-	
-	@GetMapping("/announcement/all")
-	public ResponseEntity<List<AnnouncementDTO>> getAllAnnouncements() {
-		return ResponseEntity.ok(announcementService.getAllAnnouncements());
-	}
-	
 	@DeleteMapping("/announcement")
 	public ResponseEntity<AnnouncementDTO> deleteAnnouncement(@RequestParam Long id) {
 		try {

@@ -57,7 +57,7 @@ public class VolunteerGroupController {
 	}
 	
 	@PostMapping("/leave")
-	public ResponseEntity<AnnouncementDTO> leaveGroup(@RequestParam String groupName,
+	public ResponseEntity<?> leaveGroup(@RequestParam String groupName,
 	                                                  @RequestHeader("authToken") String token) {
 		String username = authorizationService.getUsername(token);
 		try {
