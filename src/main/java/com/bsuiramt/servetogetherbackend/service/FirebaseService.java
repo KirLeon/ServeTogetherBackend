@@ -2,11 +2,8 @@ package com.bsuiramt.servetogetherbackend.service;
 
 import com.bsuiramt.servetogetherbackend.entity.AccountInfoEntity;
 import com.bsuiramt.servetogetherbackend.repository.AccountInfoRepository;
-import com.google.auth.oauth2.GoogleCredentials;
-import com.google.firebase.FirebaseApp;
 import com.google.firebase.messaging.Message;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;

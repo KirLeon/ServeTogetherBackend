@@ -67,10 +67,10 @@ public class VolunteeringService {
 	
 	@Transactional
 	public void leaveGroup(String username, String groupName) throws UserNotFoundException,
-			UserIsNotAGroupMember {
+			UserIsNotAGroupMemberException {
 		
 		VolunteerEntity volunteer = getAccountByUsername(username);
-		if (volunteer.getGroup() == null) throw new UserIsNotAGroupMember();
+		if (volunteer.getGroup() == null) throw new UserIsNotAGroupMemberException();
 		
 		volunteer.setGroup(null);
 	}

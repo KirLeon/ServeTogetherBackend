@@ -76,7 +76,7 @@ public class VolunteerGroupController {
 					.status(HttpStatus.NOT_FOUND)
 					.header("error", "User not found")
 					.build();
-		} catch (UserIsNotAGroupMember e) {
+		} catch (UserIsNotAGroupMemberException e) {
 			return ResponseEntity
 					.status(HttpStatus.BAD_REQUEST)
 					.header("error", "User is not a group member")

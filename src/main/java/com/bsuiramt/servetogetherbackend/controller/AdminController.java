@@ -10,8 +10,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @RestController
 @RequestMapping("api/v1/admin")
 @RequiredArgsConstructor
@@ -45,5 +43,18 @@ public class AdminController {
 					.header("error", "this announcement is currently in progress")
 					.build();
 		}
+	}
+	
+	@PostMapping("/announcement/confirm")
+	public ResponseEntity<AnnouncementDTO> confirmAnnouncementAccomplishment(
+			@RequestParam Long id, @RequestParam Integer rating, @RequestHeader("authToken") String token) {
+		
+		try {
+			announcementService.confirmAnnouncementAccomplishment(token, id, rating);
+			return ResponseEntity.ok().build();
+		} catch (UserNotFoundException e) {
+			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+		}
+		
 	}
 }

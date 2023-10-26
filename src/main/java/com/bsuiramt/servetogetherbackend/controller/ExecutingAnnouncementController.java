@@ -2,7 +2,7 @@ package com.bsuiramt.servetogetherbackend.controller;
 
 import com.bsuiramt.servetogetherbackend.dto.response.AnnouncementDTO;
 import com.bsuiramt.servetogetherbackend.dto.response.AnnouncementViewDTO;
-import com.bsuiramt.servetogetherbackend.exception.AnnouncementIsNotAvailable;
+import com.bsuiramt.servetogetherbackend.exception.AnnouncementIsNotAvailableException;
 import com.bsuiramt.servetogetherbackend.exception.UserNotFoundException;
 import com.bsuiramt.servetogetherbackend.service.AnnouncementService;
 import com.bsuiramt.servetogetherbackend.service.AuthorizationService;
@@ -55,7 +55,7 @@ public class ExecutingAnnouncementController {
 					ResponseEntity.ok().build() :
 					ResponseEntity.status(HttpStatus.BAD_REQUEST)
 							.header("error", "Group cannot take another task").build();
-		} catch (AnnouncementIsNotAvailable e) {
+		} catch (AnnouncementIsNotAvailableException e) {
 			return ResponseEntity.notFound().build();
 		} catch (UserNotFoundException e) {
 			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
@@ -72,7 +72,7 @@ public class ExecutingAnnouncementController {
 			firebaseService.notificateAdmin(ownerContact);
 			
 			return ResponseEntity.ok().build();
-		} catch (AnnouncementIsNotAvailable e) {
+		} catch (AnnouncementIsNotAvailableException e) {
 			return ResponseEntity.notFound()
 					.header("error", "This event is unavailable for you to finish")
 					.build();
