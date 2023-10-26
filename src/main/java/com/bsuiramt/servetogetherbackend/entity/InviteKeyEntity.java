@@ -15,5 +15,7 @@ public class InviteKeyEntity {
 	@Id
 	private String code;
 	
+	private String role;
+	
 	private boolean activated;
 }

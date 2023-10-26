@@ -1,11 +1,6 @@
 package com.bsuiramt.servetogetherbackend.model;
 
-import com.bsuiramt.servetogetherbackend.entity.VolunteerGroupEntity;
-import jakarta.persistence.Column;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.validation.constraints.Min;
+import com.bsuiramt.servetogetherbackend.model.VolunteerGroup;
 import lombok.*;
 
 @Getter
@@ -19,7 +14,7 @@ public class Volunteer {
 	
 	private String phoneNumber;
 	
-	private VolunteerGroupEntity group;
+	private VolunteerGroup group;
 	
 	private Integer coins;
 }
