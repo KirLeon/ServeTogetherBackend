@@ -56,7 +56,7 @@ public class AnnouncementService {
 	}
 	
 	public List<AnnouncementDTO> getAllAnnouncementsByTitle(String title) {
-		return announcementRepository.findAllByTitle(title)
+		return announcementRepository.findAllByTitleContainingIgnoreCase(title)
 				.stream()
 				.map(announcementMapper::entityToDTO)
 				.collect(Collectors.toList());

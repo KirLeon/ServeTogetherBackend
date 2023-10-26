@@ -27,8 +27,8 @@ CREATE TABLE IF NOT EXISTS "volunteers"
 CREATE TABLE IF NOT EXISTS "volunteer_groups"
 (
     "group_name"                     TEXT PRIMARY KEY,
-    "active_announcements_quantity"  INTEGER NOT NULL,
-    "pending_announcements_quantity" INTEGER NOT NULL
+    "active_announcements_quantity"  INTEGER DEFAULT 0,
+    "pending_announcements_quantity" INTEGER DEFAULT 0
 );
 
 ALTER TABLE "volunteers"

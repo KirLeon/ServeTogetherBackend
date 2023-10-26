@@ -1,0 +1,23 @@
+#admin eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJyb290IiwiaWF0IjoxNjk4MzYyMjczLCJleHAiOjE2OTg5NjcwNzN9.cc1PzNZfZnrmL2FMwBnsIdEpbJH3Sdg-1vJvKkdTX3H29g5Z7T3cbw1VaMmiqDm6GAjL_vbERxPDR6brhF1D2A
+#user eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJLc2JhdTIyMjMiLCJpYXQiOjE2OTgzNjIzMTksImV4cCI6MTY5ODk2NzExOX0.HMRbLjt_Aalex6N-7B53naBnDZShinopYQ5IPVwFWyPxGpU06ypUlkQrhRNZ-vpB0jRZ711Bx0d_JhUiIvbTBw
+
+### Searching all groups
+GET http://localhost:8080/api/v1/groups?groupName=u
+Content-Type: application/json
+authToken: eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJLc2JhdTIyMjMiLCJpYXQiOjE2OTgzNjIzMTksImV4cCI6MTY5ODk2NzExOX0.HMRbLjt_Aalex6N-7B53naBnDZShinopYQ5IPVwFWyPxGpU06ypUlkQrhRNZ-vpB0jRZ711Bx0d_JhUiIvbTBw
+
+### Adding group
+POST http://localhost:8080/api/v1/groups/new?groupName=uri
+Content-Type: application/json
+authToken: eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJLc2JhdTIyMjMiLCJpYXQiOjE2OTgzNjIzMTksImV4cCI6MTY5ODk2NzExOX0.HMRbLjt_Aalex6N-7B53naBnDZShinopYQ5IPVwFWyPxGpU06ypUlkQrhRNZ-vpB0jRZ711Bx0d_JhUiIvbTBw
+
+### Joining group
+POST http://localhost:8080/api/v1/groups/join?groupName=uri
+Content-Type: application/json
+authToken: eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJLc2JhdTIyMjMiLCJpYXQiOjE2OTgzNjIzMTksImV4cCI6MTY5ODk2NzExOX0.HMRbLjt_Aalex6N-7B53naBnDZShinopYQ5IPVwFWyPxGpU06ypUlkQrhRNZ-vpB0jRZ711Bx0d_JhUiIvbTBw
+
+### Leaving group
+POST http://localhost:8080/api/v1/groups/leave?groupName=vegs
+Content-Type: application/json
+authToken: eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJLc2JhdTIyMjMiLCJpYXQiOjE2OTgzNjIzMTksImV4cCI6MTY5ODk2NzExOX0.HMRbLjt_Aalex6N-7B53naBnDZShinopYQ5IPVwFWyPxGpU06ypUlkQrhRNZ-vpB0jRZ711Bx0d_JhUiIvbTBw
+

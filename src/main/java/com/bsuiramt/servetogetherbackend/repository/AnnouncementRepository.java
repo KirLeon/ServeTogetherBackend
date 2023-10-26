@@ -9,6 +9,6 @@ import java.util.List;
 
 @Repository
 public interface AnnouncementRepository extends JpaRepository<AnnouncementEntity, Long> {
-	List<AnnouncementEntity> findAllByTitle(String title);
+	List<AnnouncementEntity> findAllByTitleContainingIgnoreCase(String title);
 	List<AnnouncementEntity> findAllByOwner(AdminEntity owner);
 }

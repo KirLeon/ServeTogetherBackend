@@ -24,7 +24,7 @@ public class VolunteeringService {
 	private final VolunteerGroupRepository groupRepository;
 	private final VolunteerRepository volunteerRepository;
 	private final AccountInfoRepository accountRepository;
-	private final VolunteerGroupMapper groupMapper = VolunteerGroupMapper.INSTANCE;
+	private final VolunteerGroupMapper groupMapper;
 	
 	public List<VolunteerGroup> getGroupsByName(String name) {
 		return groupRepository.findVolunteerGroupEntitiesByGroupNameContainsIgnoreCase(name)

@@ -25,6 +25,17 @@ Content-Type: application/json
   "inviteKey": "hr37Hbfw8139hdsf8"
 }
 
+### Register new user without invite key
+POST http://localhost:8080/api/v1/signup/user
+Content-Type: application/json
+
+{
+  "username": "Ksbau2223",
+  "phoneNumber": "+319626718912",
+  "password": "AOhd91Nasdn98",
+  "inviteKey": "hr37Hbwefhdsf8"
+}
+
 ### Check activated invite key after signup
 POST http://localhost:8080/api/v1/signup/key
 Content-Type: application/json
@@ -38,21 +49,30 @@ POST http://localhost:8080/api/v1/signup/user
 Content-Type: application/json
 
 {
-  "username": "Ksbau2223",
+  "username": "sdfs",
   "phoneNumber": "+31232887422",
   "password": "FDjodsf8ndfso#",
   "inviteKey": "112EUh9878G988ggg7"
 }
 
-### Register user
+### Register user as admin
 POST http://localhost:8080/api/v1/signup/user
 Content-Type: application/json
 
 {
-  "username": "kIRlEIN",
-  "phoneNumber": "+3193456718912",
-  "password": "12345678",
-  "inviteKey" : "89d18fb7B8b98bB98B"
+  "username": "root",
+  "phoneNumber": "+312414325322",
+  "password": "rooty",
+  "inviteKey" : "as78asdn92887B9F2F"
+}
+
+### Sign in as admin
+POST http://localhost:8080/api/v1/authorization
+Content-Type: application/json
+
+{
+  "username": "root",
+  "password": "rooty"
 }
 
 ### Sign in
@@ -60,8 +80,8 @@ POST http://localhost:8080/api/v1/authorization
 Content-Type: application/json
 
 {
-  "username": "kIRlEIN",
-  "password": "12345678"
+  "username": "Ksbau2223",
+  "password": "AOhd91Nasdn98"
 }
 
 ### Trying to access some other page without token
