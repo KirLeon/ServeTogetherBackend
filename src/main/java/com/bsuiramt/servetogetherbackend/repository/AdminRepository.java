@@ -10,6 +10,5 @@ import java.util.Optional;
 
 @Repository
 public interface AdminRepository extends JpaRepository<AdminEntity, String> {
-	public Optional<AdminEntity> findAdminEntityByInfo(AccountInfoEntity info);
 	public Optional<AdminEntity> findAdminEntityByInfoId(Long info_id);
 }

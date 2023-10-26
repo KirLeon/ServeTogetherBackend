@@ -2,11 +2,14 @@ package com.bsuiramt.servetogetherbackend.service;
 
 import com.bsuiramt.servetogetherbackend.dto.request.CreateAnnouncementRequest;
 import com.bsuiramt.servetogetherbackend.dto.response.AnnouncementDTO;
+import com.bsuiramt.servetogetherbackend.dto.response.AnnouncementViewDTO;
 import com.bsuiramt.servetogetherbackend.entity.AccountInfoEntity;
 import com.bsuiramt.servetogetherbackend.entity.AdminEntity;
 import com.bsuiramt.servetogetherbackend.entity.AnnouncementEntity;
+import com.bsuiramt.servetogetherbackend.exception.AttemptToDeleteAnnouncementInProgressException;
 import com.bsuiramt.servetogetherbackend.exception.UserNotFoundException;
 import com.bsuiramt.servetogetherbackend.mapper.AnnouncementMapper;
+import com.bsuiramt.servetogetherbackend.model.AnnouncementStatus;
 import com.bsuiramt.servetogetherbackend.repository.AccountInfoRepository;
 import com.bsuiramt.servetogetherbackend.repository.AdminRepository;
 import com.bsuiramt.servetogetherbackend.repository.AnnouncementRepository;
@@ -28,13 +31,20 @@ public class AnnouncementService {
 	
 	private final AdminRepository adminRepository;
 	
-	private final AuthenticationService authenticationService;
+	private final AuthorizationService authorizationService;
 	
 	private final AnnouncementMapper announcementMapper;
 	
-	public Optional<AnnouncementDTO> getAnnouncement(Long id) {
-		return announcementRepository
-				.findById(id).map(announcementMapper::entityToDTO);
+	private final ExecutingAnnouncementService executingAnnouncementService;
+	
+	@Transactional
+	public Optional<AnnouncementViewDTO> getAnnouncement(Long id) {
+		
+		Optional<AnnouncementEntity> announcement = announcementRepository.findById(id);
+		if (announcement.isEmpty()) return Optional.empty();
+		
+		AdminEntity admin = announcement.get().getOwner();
+		return Optional.of(announcementMapper.entityToView(announcement.get(), admin.getInfo().getPhoneNumber()));
 	}
 	
 	public List<AnnouncementDTO> getAllAnnouncements() {
@@ -46,8 +56,7 @@ public class AnnouncementService {
 	}
 	
 	public List<AnnouncementDTO> getAllAnnouncementsByTitle(String title) {
-		return announcementRepository
-				.findAll()
+		return announcementRepository.findAllByTitleContainingIgnoreCase(title)
 				.stream()
 				.map(announcementMapper::entityToDTO)
 				.collect(Collectors.toList());
@@ -56,20 +65,55 @@ public class AnnouncementService {
 	@Transactional
 	public AnnouncementDTO addAnnouncement(CreateAnnouncementRequest createRequest, String token) throws UserNotFoundException {
 		
-		String username = authenticationService.getUsername(token);
+		String username = authorizationService.getUsername(token);
 		
-		Optional<AccountInfoEntity> foundAccount = accountRepository.findAccountInfoEntityByUsername(username);
-		if (foundAccount.isEmpty()) throw new UserNotFoundException();
-		
-//		Optional<AdminEntity> admin = adminRepository.findAdminEntityByInfo(foundAccount.get());
-		Optional<AdminEntity> admin = adminRepository.findAdminEntityByInfoId(foundAccount.get().getId());
-		if (admin.isEmpty()) throw new UserNotFoundException();
-		
-		AdminEntity owner = admin.get();
+		AdminEntity owner = getAdminByUsername(username);
 		AnnouncementEntity announcementEntity = new AnnouncementEntity(createRequest.title(), createRequest.content(),
 				createRequest.reward(), owner);
 		
 		AnnouncementEntity savedAnnouncement = announcementRepository.save(announcementEntity);
 		return announcementMapper.entityToDTO(savedAnnouncement);
+	}
+	
+	@Transactional
+	public Optional<AnnouncementDTO> deleteAnnouncement(Long id) throws AttemptToDeleteAnnouncementInProgressException {
+		Optional<AnnouncementEntity> foundAnnouncement = announcementRepository.findById(id);
+		if (foundAnnouncement.isEmpty()) return Optional.empty();
+		else if (foundAnnouncement.get().getStatus().equals(AnnouncementStatus.IN_PROGRESS))
+			throw new AttemptToDeleteAnnouncementInProgressException();
+		
+		announcementRepository.deleteById(id);
+		return foundAnnouncement.map(announcementMapper::entityToDTO);
+	}
+	
+	@Transactional
+	public void confirmAnnouncementAccomplishment(String token, Long announcementId, Integer rating)
+			throws UserNotFoundException {
+		
+		String username = authorizationService.getUsername(token);
+		AdminEntity admin = getAdminByUsername(username);
+		
+		List<AnnouncementEntity> announcements = announcementRepository.findAllByOwner(admin);
+		Optional<AnnouncementEntity> foundAnnouncement = announcements
+				.stream()
+				.filter(announcement -> announcement.getId().equals(announcementId))
+				.findFirst();
+		
+		if (foundAnnouncement.isPresent() && foundAnnouncement.get().getStatus().equals(AnnouncementStatus.PENDING)) {
+			AnnouncementEntity announcement = foundAnnouncement.get();
+			announcement.setStatus(AnnouncementStatus.FINISHED);
+			
+			executingAnnouncementService.awardVolunteers(announcement.getVolunteerGroup(), announcement.getReward(), rating);
+		}
+	}
+	
+	private AdminEntity getAdminByUsername(String username) throws UserNotFoundException {
+		Optional<AccountInfoEntity> foundAccount = accountRepository.findAccountInfoEntityByUsername(username);
+		if (foundAccount.isEmpty()) throw new UserNotFoundException();
+		
+		Optional<AdminEntity> admin = adminRepository.findAdminEntityByInfoId(foundAccount.get().getId());
+		if (admin.isEmpty()) throw new UserNotFoundException();
+		
+		return admin.get();
 	}
 }

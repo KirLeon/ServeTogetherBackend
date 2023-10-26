@@ -1,0 +1,2 @@
+POST http://localhost:8080/api/v1/auth
+authToken: eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJLc2JhdTIyMjMiLCJpYXQiOjE2OTgzNjAyODAsImV4cCI6MTY5ODk2NTA4MH0.1HXMvcS8qDsLH-26Mm8mD9o494cfq_2_Nvg87vIxtAkUJ97jgWm9qZXZ2l2YO2_Hdec1OYHlzZzhKUqo_qFD8Q

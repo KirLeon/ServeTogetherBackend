@@ -1,24 +1,57 @@
 ### Posting announcement as admin
 POST http://localhost:8080/api/v1/admin/announcement
 Content-Type: application/json
-authToken: eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbm9vIiwiaWF0IjoxNjk4MzI1MDYzLCJleHAiOjE2OTg5Mjk4NjN9.kJ1pgZofdyx1JoO3ZL8GoEN7jGPS7I2hn4fktlc7EAh-2fL8EHV0q9aJ4tnjwddTjkOXyo5I_BKoxiD141r3Tw
+authToken: eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJyb290IiwiaWF0IjoxNjk4MzYwNDc2LCJleHAiOjE2OTg5NjUyNzZ9.BjQB4PEJIRwgJXuOMfo8jbP7nVh7oNPoQ-STXHiGO89t8SG6dKu2fwYxRi5ibJd_LX0IqZ7YqdNs9c__B35SQA
 
 {
-  "title": "Test announcement 1",
+  "title": "Test announcement 2",
   "content": "Some cool test",
   "reward" : 200
 }
 
 ### Receiving announcement by its id
-GET http://localhost:8080/api/v1/admin/announcement?id=7
+GET http://localhost:8080/api/v1/announcement?id=3
 Content-Type: application/json
-authToken: eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbm9vIiwiaWF0IjoxNjk4MzI1MDYzLCJleHAiOjE2OTg5Mjk4NjN9.kJ1pgZofdyx1JoO3ZL8GoEN7jGPS7I2hn4fktlc7EAh-2fL8EHV0q9aJ4tnjwddTjkOXyo5I_BKoxiD141r3Tw
+authToken: eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJyb290IiwiaWF0IjoxNjk4MzYwNDc2LCJleHAiOjE2OTg5NjUyNzZ9.BjQB4PEJIRwgJXuOMfo8jbP7nVh7oNPoQ-STXHiGO89t8SG6dKu2fwYxRi5ibJd_LX0IqZ7YqdNs9c__B35SQA
 
 ### Receiving announcement by its id without token
-GET http://localhost:8080/api/v1/admin/announcement?id=7
+GET http://localhost:8080/api/v1/announcement?id=7
 Content-Type: application/json
 
 ### Receiving announcement that is not exist
-GET http://localhost:8080/api/v1/admin/announcement?id=4
+GET http://localhost:8080/api/v1/announcement?id=4
 Content-Type: application/json
-authToken: eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbm9vIiwiaWF0IjoxNjk4MzI1MDYzLCJleHAiOjE2OTg5Mjk4NjN9.kJ1pgZofdyx1JoO3ZL8GoEN7jGPS7I2hn4fktlc7EAh-2fL8EHV0q9aJ4tnjwddTjkOXyo5I_BKoxiD141r3Tw
+authToken: eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbm9vIiwiaWF0IjoxNjk4MzUwMzM0LCJleHAiOjE2OTg5NTUxMzR9.fNCseqSeMZ334KzbzZiFAwV9PZEGWCv9DaLVrw0OtJqrjeEwP-ohMiOChPviQAv7HBkDRJwCVpV2kvwEhysC4Q
+
+### Deleting announcement that is exist
+DELETE http://localhost:8080/api/v1/admin/announcement?id=2
+Content-Type: application/json
+authToken: eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJyb290IiwiaWF0IjoxNjk4MzYwNDc2LCJleHAiOjE2OTg5NjUyNzZ9.BjQB4PEJIRwgJXuOMfo8jbP7nVh7oNPoQ-STXHiGO89t8SG6dKu2fwYxRi5ibJd_LX0IqZ7YqdNs9c__B35SQA
+
+
+### Posting announcement as Volunteer
+POST http://localhost:8080/api/v1/admin/announcement
+Content-Type: application/json
+authToken: eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJLc2JhdTIyMjMiLCJpYXQiOjE2OTgzNjExOTIsImV4cCI6MTY5ODk2NTk5Mn0.4jgbsjJBvoHp3XziJSYYBnlVeKnP3pasSnowJhqXRsd4m7cF_PoCimtR487X0OV1OYnQCj1s1Qj46bPZJCPg6w
+
+{
+  "title": "Test announcement 2",
+  "content": "Some cool test",
+  "reward" : 200
+}
+
+### Receiving all announcements
+GET http://localhost:8080/api/v1/announcement/title?title=a
+Content-Type: application/json
+authToken: eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJyb290IiwiaWF0IjoxNjk4MzYwNDc2LCJleHAiOjE2OTg5NjUyNzZ9.BjQB4PEJIRwgJXuOMfo8jbP7nVh7oNPoQ-STXHiGO89t8SG6dKu2fwYxRi5ibJd_LX0IqZ7YqdNs9c__B35SQA
+
+
+### Deleting announcement as Volunteer
+DELETE http://localhost:8080/api/v1/admin/announcement?id=1
+Content-Type: application/json
+authToken: eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJrSVJsRUlOIiwiaWF0IjoxNjk4MzUwNzEzLCJleHAiOjE2OTg5NTU1MTN9.ucWgBKPzEzM4VAefFW3Z5XwNiAY-Mr950rYbh_ggYfabavceRQlne8cS9aciAgF8L0-c0uWw2FT8eZZ-SWE-Sw
+
+### Deleting announcement in progress
+DELETE http://localhost:8080/api/v1/admin/announcement?id=3
+Content-Type: application/json
+authToken: eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJyb290IiwiaWF0IjoxNjk4MzYwNDc2LCJleHAiOjE2OTg5NjUyNzZ9.BjQB4PEJIRwgJXuOMfo8jbP7nVh7oNPoQ-STXHiGO89t8SG6dKu2fwYxRi5ibJd_LX0IqZ7YqdNs9c__B35SQA

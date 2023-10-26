@@ -8,11 +8,12 @@ CREATE TABLE IF NOT EXISTS "market_items"
 
 CREATE TABLE IF NOT EXISTS "account_info"
 (
-    "id"           BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
-    "role"         TEXT NOT NULL,
-    "username"     TEXT NOT NULL UNIQUE,
-    "password"     TEXT NOT NULL,
-    "phone_number" TEXT NOT NULL UNIQUE
+    "id"             BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+    "role"           TEXT NOT NULL,
+    "username"       TEXT NOT NULL UNIQUE,
+    "password"       TEXT NOT NULL,
+    "phone_number"   TEXT NOT NULL UNIQUE,
+    "registry_token" TEXT NULL
 );
 
 CREATE TABLE IF NOT EXISTS "volunteers"
@@ -26,8 +27,8 @@ CREATE TABLE IF NOT EXISTS "volunteers"
 CREATE TABLE IF NOT EXISTS "volunteer_groups"
 (
     "group_name"                     TEXT PRIMARY KEY,
-    "active_announcements_quantity"  INTEGER NOT NULL,
-    "pending_announcements_quantity" INTEGER NOT NULL
+    "active_announcements_quantity"  INTEGER DEFAULT 0,
+    "pending_announcements_quantity" INTEGER DEFAULT 0
 );
 
 ALTER TABLE "volunteers"

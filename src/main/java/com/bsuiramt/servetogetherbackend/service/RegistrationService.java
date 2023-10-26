@@ -7,7 +7,7 @@ import com.bsuiramt.servetogetherbackend.entity.InviteKeyEntity;
 import com.bsuiramt.servetogetherbackend.entity.VolunteerEntity;
 import com.bsuiramt.servetogetherbackend.exception.InvalidInviteKeyException;
 import com.bsuiramt.servetogetherbackend.exception.InvalidUserRoleException;
-import com.bsuiramt.servetogetherbackend.exception.PhoneNumberIsAlreadyExists;
+import com.bsuiramt.servetogetherbackend.exception.PhoneNumberIsAlreadyExistsException;
 import com.bsuiramt.servetogetherbackend.exception.UsernameIsAlreadyTakenException;
 import com.bsuiramt.servetogetherbackend.mapper.VolunteerMapper;
 import com.bsuiramt.servetogetherbackend.model.UserRole;
@@ -52,7 +52,7 @@ public class RegistrationService {
 	@Transactional
 	public Volunteer registerUser(UserRegistrationRequest registrationRequest)
 			throws UsernameIsAlreadyTakenException, InvalidInviteKeyException,
-			PhoneNumberIsAlreadyExists, InvalidUserRoleException {
+			PhoneNumberIsAlreadyExistsException, InvalidUserRoleException {
 		
 		Optional<InviteKeyEntity> key = keyRepository.findById(registrationRequest.inviteKey());
 		if (key.isEmpty() || key.get().isActivated()) throw new InvalidInviteKeyException();
@@ -60,7 +60,7 @@ public class RegistrationService {
 		if (accountInfoRepository.existsAccountInfoEntityByUsername(registrationRequest.username()))
 			throw new UsernameIsAlreadyTakenException();
 		else if (accountInfoRepository.existsAccountInfoEntityByPhoneNumber(registrationRequest.phoneNumber()))
-			throw new PhoneNumberIsAlreadyExists();
+			throw new PhoneNumberIsAlreadyExistsException();
 		
 		AccountInfoEntity accountInfoToSave = new AccountInfoEntity(UserRole.valueOf(key.get().getRole()),
 				registrationRequest.username(), registrationRequest.password(), registrationRequest.phoneNumber());

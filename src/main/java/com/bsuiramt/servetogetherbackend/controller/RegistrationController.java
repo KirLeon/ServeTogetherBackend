@@ -4,7 +4,7 @@ import com.bsuiramt.servetogetherbackend.dto.request.InviteKeyRequest;
 import com.bsuiramt.servetogetherbackend.dto.request.UserRegistrationRequest;
 import com.bsuiramt.servetogetherbackend.exception.InvalidInviteKeyException;
 import com.bsuiramt.servetogetherbackend.exception.InvalidUserRoleException;
-import com.bsuiramt.servetogetherbackend.exception.PhoneNumberIsAlreadyExists;
+import com.bsuiramt.servetogetherbackend.exception.PhoneNumberIsAlreadyExistsException;
 import com.bsuiramt.servetogetherbackend.exception.UsernameIsAlreadyTakenException;
 import com.bsuiramt.servetogetherbackend.model.UserRole;
 import com.bsuiramt.servetogetherbackend.model.Volunteer;
@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping(value = "api/v1/registration")
+@RequestMapping(value = "api/v1/signup")
 @RequiredArgsConstructor
 public class RegistrationController {
 	
@@ -43,7 +43,7 @@ public class RegistrationController {
 		} catch (UsernameIsAlreadyTakenException usernameIsAlreadyTakenException) {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST)
 					.header("error", "This username is already taken").build();
-		} catch (PhoneNumberIsAlreadyExists phoneNumberIsAlreadyTakenException) {
+		} catch (PhoneNumberIsAlreadyExistsException phoneNumberIsAlreadyTakenException) {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST)
 					.header("error", "This phone number is already taken").build();
 		} catch (InvalidUserRoleException e) {
