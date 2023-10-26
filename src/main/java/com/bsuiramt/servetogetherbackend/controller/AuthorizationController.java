@@ -1,20 +1,27 @@
 package com.bsuiramt.servetogetherbackend.controller;
 
-import com.bsuiramt.servetogetherbackend.dto.request.UserAuthorizationRequest;
-import com.google.auth.oauth2.GoogleCredentials;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.bsuiramt.servetogetherbackend.dto.request.UserAuthenticationRequest;
+import com.bsuiramt.servetogetherbackend.service.AuthenticationService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.Optional;
 
 @RestController
-@RequestMapping(value = "authorize")
+@RequestMapping(value = "api/v1/authorize")
+@RequiredArgsConstructor
 public class AuthorizationController {
+	
+	private final AuthenticationService authenticationService;
+	
 	@PostMapping
-	public ResponseEntity<Object> authorizeUser(@RequestBody UserAuthorizationRequest authorizationRequest) {
-		return authorizationRequest.password().length() < 8 ? ResponseEntity.ok("User has been successfully authorized")
-				: ResponseEntity.badRequest().build();
+	public ResponseEntity<String> authorizeUser(@RequestBody UserAuthenticationRequest authorizationRequest,
+	                                            @RequestHeader(name = "authToken") String token) {
+		Optional<String> updatedToken = authenticationService.authenticateUser(authorizationRequest, token);
+		if (updatedToken.isEmpty()) {
+			return ResponseEntity.status(HttpStatus.OK).header("authToken", token).body("Token is up to date");
+		} else return ResponseEntity.status(HttpStatus.OK).header("authToken", updatedToken.get()).body("Updated token");
 	}
 }

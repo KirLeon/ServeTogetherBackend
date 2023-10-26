@@ -8,6 +8,5 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 public class FirebaseService {
-	
 	private final GoogleCredentials credentials;
 }

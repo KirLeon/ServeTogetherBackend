@@ -9,6 +9,7 @@ CREATE TABLE IF NOT EXISTS "market_items"
 CREATE TABLE IF NOT EXISTS "account_info"
 (
     "id"           BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+    "role"         TEXT NOT NULL,
     "username"     TEXT NOT NULL UNIQUE,
     "password"     TEXT NOT NULL,
     "phone_number" TEXT NOT NULL UNIQUE
@@ -47,13 +48,14 @@ CREATE TABLE IF NOT EXISTS "announcements"
     "reward"           BIGINT NOT NULL,
     "creation_date"    DATE DEFAULT current_date,
     "expiration_date"  DATE DEFAULT current_date + INTERVAL '5 days',
-    "owner"           BIGINT NOT NULL,
+    "owner"            BIGINT NOT NULL,
     "volunteer_groups" TEXT   NULL
 );
 
 CREATE TABLE IF NOT EXISTS "invite_keys"
 (
     "code"      TEXT PRIMARY KEY,
+    "role"      TEXT NOT NULL,
     "activated" BOOLEAN DEFAULT FALSE
 );
 
