@@ -34,6 +34,21 @@ public class VolunteeringService {
 	}
 	
 	@Transactional
+	public boolean createGroup(String groupName) {
+		
+		if (groupRepository.findById(groupName).isPresent()) {
+			return false;
+		}
+		
+		VolunteerGroupEntity newGroup = new VolunteerGroupEntity();
+		newGroup.setGroupName(groupName);
+		
+		groupRepository.save(newGroup);
+		
+		return true;
+	}
+	
+	@Transactional
 	public void addVolunteerToGroup(String username, String groupName) throws GroupNotFoundException,
 			GroupIsFullException, UserNotFoundException, UserIsAlreadyGroupMemberException {
 		

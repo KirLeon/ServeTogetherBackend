@@ -1,6 +1,5 @@
 package com.bsuiramt.servetogetherbackend.controller;
 
-import com.bsuiramt.servetogetherbackend.dto.response.AnnouncementDTO;
 import com.bsuiramt.servetogetherbackend.exception.*;
 import com.bsuiramt.servetogetherbackend.model.VolunteerGroup;
 import com.bsuiramt.servetogetherbackend.service.AuthorizationService;
@@ -23,6 +22,15 @@ public class VolunteerGroupController {
 	@GetMapping
 	public ResponseEntity<List<VolunteerGroup>> getGroups(@RequestParam String groupName) {
 		return ResponseEntity.ok(volunteeringService.getGroupsByName(groupName));
+	}
+	
+	@PostMapping("/new")
+	public ResponseEntity<?> addGroup(@RequestParam String groupName) {
+		return volunteeringService.createGroup(groupName) ? ResponseEntity.ok().build() :
+				ResponseEntity
+						.status(HttpStatus.BAD_REQUEST)
+						.header("error", "Cannot create group with this name")
+						.build();
 	}
 	
 	@PostMapping("/join")
@@ -58,7 +66,7 @@ public class VolunteerGroupController {
 	
 	@PostMapping("/leave")
 	public ResponseEntity<?> leaveGroup(@RequestParam String groupName,
-	                                                  @RequestHeader("authToken") String token) {
+	                                    @RequestHeader("authToken") String token) {
 		String username = authorizationService.getUsername(token);
 		try {
 			volunteeringService.leaveGroup(username, groupName);

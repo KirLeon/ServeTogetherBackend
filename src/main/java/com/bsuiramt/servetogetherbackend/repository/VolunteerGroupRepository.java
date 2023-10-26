@@ -9,5 +9,6 @@ import java.util.List;
 @Repository
 public interface VolunteerGroupRepository extends JpaRepository<VolunteerGroupEntity, String> {
 	List<VolunteerGroupEntity> findVolunteerGroupEntitiesByGroupNameContainsIgnoreCase(String groupName);
+	
 	int countAllByGroupName(String groupName);
 }
