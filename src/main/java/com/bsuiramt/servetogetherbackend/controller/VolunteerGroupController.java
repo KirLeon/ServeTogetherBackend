@@ -40,7 +40,7 @@ public class VolunteerGroupController {
 					.build();
 		} catch (UserNotFoundException e) {
 			return ResponseEntity
-					.status(HttpStatus.NOT_FOUND)
+					.status(HttpStatus.UNAUTHORIZED)
 					.header("error", "User not found")
 					.build();
 		} catch (GroupIsFullException e) {

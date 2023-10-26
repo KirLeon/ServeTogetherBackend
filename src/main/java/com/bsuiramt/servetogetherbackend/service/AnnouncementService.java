@@ -2,6 +2,7 @@ package com.bsuiramt.servetogetherbackend.service;
 
 import com.bsuiramt.servetogetherbackend.dto.request.CreateAnnouncementRequest;
 import com.bsuiramt.servetogetherbackend.dto.response.AnnouncementDTO;
+import com.bsuiramt.servetogetherbackend.dto.response.AnnouncementViewDTO;
 import com.bsuiramt.servetogetherbackend.entity.AccountInfoEntity;
 import com.bsuiramt.servetogetherbackend.entity.AdminEntity;
 import com.bsuiramt.servetogetherbackend.entity.AnnouncementEntity;
@@ -34,9 +35,14 @@ public class AnnouncementService {
 	
 	private final AnnouncementMapper announcementMapper;
 	
-	public Optional<AnnouncementDTO> getAnnouncement(Long id) {
-		return announcementRepository
-				.findById(id).map(announcementMapper::entityToDTO);
+	@Transactional
+	public Optional<AnnouncementViewDTO> getAnnouncement(Long id) {
+		
+		Optional<AnnouncementEntity> announcement = announcementRepository.findById(id);
+		if (announcement.isEmpty()) return Optional.empty();
+		
+		AdminEntity admin = announcement.get().getOwner();
+		return Optional.of(announcementMapper.entityToView(announcement.get(), admin.getInfo().getPhoneNumber()));
 	}
 	
 	public List<AnnouncementDTO> getAllAnnouncements() {

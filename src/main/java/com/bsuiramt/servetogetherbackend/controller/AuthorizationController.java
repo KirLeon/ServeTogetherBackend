@@ -21,18 +21,23 @@ public class AuthorizationController {
 	@PostMapping("")
 	public ResponseEntity<AuthenticatedUserWithToken> authorizeUser(
 			@RequestBody UserAuthenticationRequest authorizationRequest,
-			@RequestHeader(value = "registryToken", required = true) String registryToken) {
+			@RequestHeader(value = "registryToken", required = false, defaultValue = "unknown") String registryToken) {
 		try {
 			return ResponseEntity.ok(authorizationService.authenticateUser(authorizationRequest, registryToken));
 		} catch (UserNotFoundException e) {
-			return ResponseEntity.notFound().build();
+			return ResponseEntity
+					.status(HttpStatus.UNAUTHORIZED)
+					.header("error", "User not found")
+					.build();
 		} catch (IncorrectPasswordException e) {
-			return ResponseEntity.status(HttpStatus.BAD_REQUEST).header("error", "Incorrect password").build();
+			return ResponseEntity
+					.status(HttpStatus.BAD_REQUEST)
+					.header("error", "Incorrect password")
+					.build();
 		} catch (InvalidUserRoleException e) {
 			return ResponseEntity.internalServerError().build();
 		}
 	}
-	
 	
 	
 }

@@ -1,8 +1,14 @@
 package com.bsuiramt.servetogetherbackend.controller;
 
 import com.bsuiramt.servetogetherbackend.dto.response.AnnouncementDTO;
+import com.bsuiramt.servetogetherbackend.dto.response.AnnouncementViewDTO;
+import com.bsuiramt.servetogetherbackend.exception.AnnouncementIsNotAvailable;
+import com.bsuiramt.servetogetherbackend.exception.UserNotFoundException;
 import com.bsuiramt.servetogetherbackend.service.AnnouncementService;
+import com.bsuiramt.servetogetherbackend.service.AuthorizationService;
+import com.bsuiramt.servetogetherbackend.service.ExecutingAnnouncementService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,9 +20,12 @@ import java.util.List;
 public class ExecutingAnnouncementController {
 	
 	private final AnnouncementService announcementService;
+	private final ExecutingAnnouncementService executingAnnouncementService;
+	private final AuthorizationService authorizationService;
+	
 	
 	@GetMapping("/announcement")
-	public ResponseEntity<AnnouncementDTO> getAnnouncement(@RequestParam Long id) {
+	public ResponseEntity<AnnouncementViewDTO> getAnnouncement(@RequestParam Long id) {
 		
 		return announcementService.getAnnouncement(id)
 				.map(ResponseEntity::ok)
@@ -34,13 +43,26 @@ public class ExecutingAnnouncementController {
 	}
 	
 	@PostMapping("/take")
-	public ResponseEntity<?> takeAnnouncementInWork(@RequestParam Long announcementId) {
-		//TODO implement logic
-		return null;
+	public ResponseEntity<?> takeAnnouncementInWork(@RequestParam Long announcementId,
+	                                                @RequestHeader("authToken") String token) {
+		
+		String username = authorizationService.getUsername(token);
+		
+		try {
+			return executingAnnouncementService.takeAnnouncementInWork(username, announcementId) ?
+					ResponseEntity.ok().build() :
+					ResponseEntity.status(HttpStatus.BAD_REQUEST)
+							.header("error", "Group cannot take another task").build();
+		} catch (AnnouncementIsNotAvailable e) {
+			return ResponseEntity.notFound().build();
+		} catch (UserNotFoundException e) {
+			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+		}
 	}
 	
 	@PostMapping("/finish")
-	public ResponseEntity<?> completeAnnouncement(@RequestParam Long announcementId) {
+	public ResponseEntity<?> completeAnnouncement(@RequestParam Long announcementId,
+	                                              @RequestParam String comment) {
 		//TODO implement logic
 		//TODO notify administrator
 		return null;

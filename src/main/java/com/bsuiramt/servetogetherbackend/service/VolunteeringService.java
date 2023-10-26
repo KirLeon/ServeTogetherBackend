@@ -60,7 +60,7 @@ public class VolunteeringService {
 		volunteer.setGroup(null);
 	}
 	
-	private VolunteerEntity getAccountByUsername(String username) throws UserNotFoundException {
+	public VolunteerEntity getAccountByUsername(String username) throws UserNotFoundException {
 		Optional<AccountInfoEntity> foundAccount = accountRepository.findAccountInfoEntityByUsername(username);
 		if (foundAccount.isEmpty()) throw new UserNotFoundException();
 		

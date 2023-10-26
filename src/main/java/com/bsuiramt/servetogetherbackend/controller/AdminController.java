@@ -27,7 +27,7 @@ public class AdminController {
 			return ResponseEntity.ok(announcementService.addAnnouncement(announcementRequest, token));
 		} catch (UserNotFoundException e) {
 			return ResponseEntity
-					.status(HttpStatus.NOT_FOUND)
+					.status(HttpStatus.UNAUTHORIZED)
 					.header("error", "User not found")
 					.build();
 		}

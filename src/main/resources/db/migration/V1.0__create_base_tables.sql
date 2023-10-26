@@ -13,7 +13,7 @@ CREATE TABLE IF NOT EXISTS "account_info"
     "username"       TEXT NOT NULL UNIQUE,
     "password"       TEXT NOT NULL,
     "phone_number"   TEXT NOT NULL UNIQUE,
-    "registry_token" TEXT NOT NULL
+    "registry_token" TEXT NULL
 );
 
 CREATE TABLE IF NOT EXISTS "volunteers"
