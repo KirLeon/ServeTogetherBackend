@@ -62,4 +62,8 @@ public class AuthenticationService {
 			throw new InvalidUserRoleException();
 		}
 	}
+	
+	public String getUsername(String token){
+		return jwtService.getUsernameFromToken(token);
+	}
 }

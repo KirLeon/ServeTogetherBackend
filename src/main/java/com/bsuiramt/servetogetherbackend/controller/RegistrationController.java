@@ -3,6 +3,8 @@ package com.bsuiramt.servetogetherbackend.controller;
 import com.bsuiramt.servetogetherbackend.dto.request.InviteKeyRequest;
 import com.bsuiramt.servetogetherbackend.dto.request.UserRegistrationRequest;
 import com.bsuiramt.servetogetherbackend.exception.InvalidInviteKeyException;
+import com.bsuiramt.servetogetherbackend.exception.InvalidUserRoleException;
+import com.bsuiramt.servetogetherbackend.exception.PhoneNumberIsAlreadyExists;
 import com.bsuiramt.servetogetherbackend.exception.UsernameIsAlreadyTakenException;
 import com.bsuiramt.servetogetherbackend.model.UserRole;
 import com.bsuiramt.servetogetherbackend.model.Volunteer;
@@ -41,6 +43,12 @@ public class RegistrationController {
 		} catch (UsernameIsAlreadyTakenException usernameIsAlreadyTakenException) {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST)
 					.header("error", "This username is already taken").build();
+		} catch (PhoneNumberIsAlreadyExists phoneNumberIsAlreadyTakenException) {
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+					.header("error", "This phone number is already taken").build();
+		} catch (InvalidUserRoleException e) {
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+					.header("error", "Something went wrong during user registration").build();
 		}
 	}
 }

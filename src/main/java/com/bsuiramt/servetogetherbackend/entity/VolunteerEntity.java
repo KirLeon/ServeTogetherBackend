@@ -27,7 +27,7 @@ public class VolunteerEntity {
 	private AccountInfoEntity info;
 	
 	@JoinColumn(name = "group_name")
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	private VolunteerGroupEntity group;
 	
 	@Min(value = 0, message = "Coin amount should not be less than zero")

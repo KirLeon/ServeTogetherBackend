@@ -11,6 +11,6 @@ public class VolunteerMapper {
 	private final VolunteerGroupMapper groupMapper = VolunteerGroupMapper.INSTANCE;
 	
 	public final Volunteer entityToModel(AccountInfoEntity accountInfo, VolunteerGroupEntity groupEntity, Integer coins) {
-		return new Volunteer(accountInfo.getUsername(), accountInfo.getPhoneNumber(), groupMapper.entityToModel(groupEntity), coins);
+		return new Volunteer(accountInfo.getUsername(), accountInfo.getPhoneNumber(), accountInfo.getPassword(), groupMapper.entityToModel(groupEntity), coins);
 	}
 }
