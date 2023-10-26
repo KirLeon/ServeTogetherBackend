@@ -10,8 +10,12 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class AdminEntity {
 	
+	public AdminEntity(AccountInfoEntity info) {
+		this.info = info;
+	}
+	
 	@Id
-	@Column(name = "UID")
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long uid;
 	
 	@OneToOne

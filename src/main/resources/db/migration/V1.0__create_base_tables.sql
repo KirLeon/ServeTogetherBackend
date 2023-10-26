@@ -17,7 +17,7 @@ CREATE TABLE IF NOT EXISTS "account_info"
 
 CREATE TABLE IF NOT EXISTS "volunteers"
 (
-    "UID"        BIGINT GENERATED ALWAYS AS IDENTITY,
+    "uid"        BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
     "info_id"    BIGINT REFERENCES "account_info" ("id"),
     "group_name" TEXT,
     "coins"      INT NOT NULL
@@ -35,7 +35,7 @@ ALTER TABLE "volunteers"
 
 CREATE TABLE IF NOT EXISTS "administrators"
 (
-    "UID"     BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+    "uid"     BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
     "info_id" BIGINT REFERENCES "account_info" ("id")
 );
 
@@ -60,7 +60,7 @@ CREATE TABLE IF NOT EXISTS "invite_keys"
 );
 
 ALTER TABLE "announcements"
-    ADD FOREIGN KEY ("owner") REFERENCES "administrators" ("UID");
+    ADD FOREIGN KEY ("owner") REFERENCES "administrators" ("uid");
 
 ALTER TABLE "announcements"
     ADD FOREIGN KEY ("volunteer_groups") REFERENCES "volunteer_groups" ("group_name");

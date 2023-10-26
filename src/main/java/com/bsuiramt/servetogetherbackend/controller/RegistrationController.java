@@ -1,5 +1,6 @@
 package com.bsuiramt.servetogetherbackend.controller;
 
+import com.bsuiramt.servetogetherbackend.dto.request.InviteKeyRequest;
 import com.bsuiramt.servetogetherbackend.dto.request.UserRegistrationRequest;
 import com.bsuiramt.servetogetherbackend.exception.InvalidInviteKeyException;
 import com.bsuiramt.servetogetherbackend.exception.UsernameIsAlreadyTakenException;
@@ -22,9 +23,9 @@ public class RegistrationController {
 	private final RegistrationService registrationService;
 	
 	@PostMapping(value = "/key")
-	public ResponseEntity<UserRole> checkInviteKey(@RequestBody String inviteKey) {
+	public ResponseEntity<UserRole> checkInviteKey(@RequestBody InviteKeyRequest keyRequest) {
 		try {
-			return ResponseEntity.ok(registrationService.checkInviteKey(inviteKey));
+			return ResponseEntity.ok(registrationService.checkInviteKey(keyRequest.inviteKey()));
 		} catch (InvalidInviteKeyException invalidInviteKeyException) {
 			return ResponseEntity.notFound().build();
 		}

@@ -13,8 +13,14 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class VolunteerEntity {
 	
+	public VolunteerEntity(AccountInfoEntity info, VolunteerGroupEntity group, Integer coins) {
+		this.info = info;
+		this.group = group;
+		this.coins = coins;
+	}
+	
 	@Id
-	@Column(name = "UID")
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long uid;
 	
 	@OneToOne

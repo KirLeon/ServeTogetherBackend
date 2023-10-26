@@ -1,13 +1,15 @@
 package com.bsuiramt.servetogetherbackend.controller;
 
 import com.bsuiramt.servetogetherbackend.dto.request.UserAuthenticationRequest;
+import com.bsuiramt.servetogetherbackend.dto.response.AuthenticatedUserWithToken;
+import com.bsuiramt.servetogetherbackend.exception.IncorrectPasswordException;
+import com.bsuiramt.servetogetherbackend.exception.InvalidUserRoleException;
+import com.bsuiramt.servetogetherbackend.exception.UserNotFoundException;
 import com.bsuiramt.servetogetherbackend.service.AuthenticationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.Optional;
 
 @RestController
 @RequestMapping(value = "api/v1/authorize")
@@ -17,11 +19,17 @@ public class AuthorizationController {
 	private final AuthenticationService authenticationService;
 	
 	@PostMapping
-	public ResponseEntity<String> authorizeUser(@RequestBody UserAuthenticationRequest authorizationRequest,
-	                                            @RequestHeader(name = "authToken") String token) {
-		Optional<String> updatedToken = authenticationService.authenticateUser(authorizationRequest, token);
-		if (updatedToken.isEmpty()) {
-			return ResponseEntity.status(HttpStatus.OK).header("authToken", token).body("Token is up to date");
-		} else return ResponseEntity.status(HttpStatus.OK).header("authToken", updatedToken.get()).body("Updated token");
+	public ResponseEntity<AuthenticatedUserWithToken> authorizeUser(@RequestBody UserAuthenticationRequest authorizationRequest,
+	                                                                @RequestHeader(name = "authToken") String token) {
+		try {
+			return ResponseEntity.ok(authenticationService.authenticateUser(authorizationRequest));
+		} catch (UserNotFoundException e) {
+			return ResponseEntity.notFound().build();
+		} catch (IncorrectPasswordException e) {
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).header("error", "Incorrect password").build();
+		} catch (InvalidUserRoleException e) {
+			return ResponseEntity.internalServerError().build();
+		}
+		
 	}
 }

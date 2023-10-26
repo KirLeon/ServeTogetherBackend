@@ -1,0 +1,45 @@
+### Check invite key
+POST http://localhost:8080/api/v1/registration/key
+Content-Type: application/json
+
+{
+  "inviteKey" : "hr37Hbfw8139hdsf8"
+}
+
+### Check activated invite key
+POST http://localhost:8080/api/v1/registration/key
+Content-Type: application/json
+
+{
+  "inviteKey" : "HEF78b8fh7w8DSH723D"
+}
+
+### Register new user with unique id
+POST http://localhost:8080/api/v1/registration/user
+Content-Type: application/json
+
+{
+  "username": "Ksbau2223",
+  "phoneNumber": "+319626718912",
+  "password": "AOhd91Nasdn98",
+  "inviteKey": "hr37Hbfw8139hdsf8"
+}
+
+### Check activated invite key after registration
+POST http://localhost:8080/api/v1/registration/key
+Content-Type: application/json
+
+{
+  "inviteKey" : "hr37Hbfw8139hdsf8"
+}
+
+### Register user with existing id
+POST http://localhost:8080/api/v1/registration/user
+Content-Type: application/json
+
+{
+  "username": "Ksbau2223",
+  "phoneNumber": "+31232887422",
+  "password": "FDjodsf8ndfso#",
+  "inviteKey": "112EUh9878G988ggg7"
+}

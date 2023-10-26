@@ -11,6 +11,12 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class MarketItemEntity {
 	
+	public MarketItemEntity(String title, Integer price, String img_path) {
+		this.title = title;
+		this.price = price;
+		this.img_path = img_path;
+	}
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;

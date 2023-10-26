@@ -6,3 +6,5 @@ VALUES ('hr37Hbfw8139hdsf8', 'VOLUNTEER'),
        ('89d18fb7B8b98bB98B', 'VOLUNTEER'),
        ('112EUh9878G988ggg7', 'VOLUNTEER');
 
+UPDATE "invite_keys" SET activated = TRUE WHERE code = 'HEF78b8fh7w8DSH723D'
+

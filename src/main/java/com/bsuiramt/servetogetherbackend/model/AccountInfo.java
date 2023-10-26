@@ -11,7 +11,7 @@ import lombok.Setter;
 @AllArgsConstructor
 public class AccountInfo {
 	private Long id;
-	private String role;
+	private UserRole role;
 	private String username;
 	private String password;
 	private String phoneNumber;

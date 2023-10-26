@@ -14,12 +14,14 @@ import com.bsuiramt.servetogetherbackend.repository.InviteKeyRepository;
 import com.bsuiramt.servetogetherbackend.repository.VolunteerRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class RegistrationService {
 	
 	private final InviteKeyRepository keyRepository;
@@ -31,6 +33,7 @@ public class RegistrationService {
 	private final VolunteerMapper volunteerMapper;
 	
 	public UserRole checkInviteKey(String inviteKey) throws InvalidInviteKeyException {
+		log.info("required key: " + inviteKey);
 		Optional<InviteKeyEntity> foundKey = keyRepository.findById(inviteKey);
 		
 		if (foundKey.isEmpty() || foundKey.get().isActivated()) {
@@ -50,15 +53,16 @@ public class RegistrationService {
 		if (accountInfoRepository.existsAccountInfoEntityByUsername(registrationRequest.username()))
 			throw new UsernameIsAlreadyTakenException();
 		
-		AccountInfoEntity accountInfoToSave = new AccountInfoEntity(0L, key.get().getRole(),
+		AccountInfoEntity accountInfoToSave = new AccountInfoEntity(UserRole.valueOf(key.get().getRole()),
 				registrationRequest.username(), registrationRequest.password(), registrationRequest.phoneNumber());
 		AccountInfoEntity savedAccountInfo = accountInfoRepository.save(accountInfoToSave);
 		
-		volunteerRepository.save(new VolunteerEntity(0L, savedAccountInfo, null, 0));
+		volunteerRepository.save(new VolunteerEntity(savedAccountInfo, null, 0));
 		
 		key = keyRepository.findById(registrationRequest.inviteKey());
 		if (key.isEmpty() || key.get().isActivated()) throw new InvalidInviteKeyException();
 		
+		key.get().setActivated(true);
 		return volunteerMapper.entityToModel(savedAccountInfo, null, 0);
 	}
 	
