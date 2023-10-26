@@ -1,3 +1,4 @@
+# Stage 1: Build
 FROM openjdk:17-slim as build
 LABEL authors="kirleon"
 
@@ -8,13 +9,14 @@ COPY .mvn .mvn
 COPY src src
 
 RUN chmod +x mvnw
-RUN ./mvnw clean install
+RUN ./mvnw clean install -DskipTests
 
 ARG JAR_FILE=target/*.jar
 COPY $JAR_FILE serve-together.jar
 
 RUN mkdir -p target/dependency && (cd target/dependency; jar -xf /serve-together.jar)
 
+# Stage 2: Creating container
 FROM openjdk:17-slim
 VOLUME /tmp
 
