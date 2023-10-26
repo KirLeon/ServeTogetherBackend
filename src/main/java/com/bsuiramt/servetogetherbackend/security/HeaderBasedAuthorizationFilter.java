@@ -26,7 +26,7 @@ public class HeaderBasedAuthorizationFilter extends OncePerRequestFilter {
 	private final AuthorizationService authorizationService;
 	private final AuthenticationService authenticationService;
 	private final List<String> permittedUrls =
-			List.of("/api/v1/registration.*", "/api/v1/authorize.*", "/swagger-ui.*", "/v3/api-docs.*");
+			List.of("/api/v1/signup.*", "/api/v1/authorization.*", "/swagger-ui.*", "/v3/api-docs.*");
 	
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
@@ -40,9 +40,9 @@ public class HeaderBasedAuthorizationFilter extends OncePerRequestFilter {
 			return;
 		}
 		
-		String authToken = request.getHeader("authToken");
-		
 		try {
+			String authToken = request.getHeader("authToken");
+			
 			authenticationService.authenticateUser(authToken);
 			UserRole userRole = authorizationService.checkUserRole(authToken);
 			
@@ -55,8 +55,12 @@ public class HeaderBasedAuthorizationFilter extends OncePerRequestFilter {
 			} else {
 				filterChain.doFilter(request, response);
 			}
-		} catch (Exception e) {
-			handleException(e, response);
+		} catch (UserNotFoundException e) {
+			sendErrorResponse(response, "Invalid user", 403);
+		} catch (InvalidUserRoleException e) {
+			sendErrorResponse(response, "Invalid user role", 500);
+		} catch (InvalidTokenException e) {
+			sendErrorResponse(response, "Invalid token", 403);
 		}
 	}
 	
@@ -64,22 +68,6 @@ public class HeaderBasedAuthorizationFilter extends OncePerRequestFilter {
 		return permittedUrls.stream().anyMatch(requestUrl::matches);
 	}
 	
-	private void handleException(Exception e, HttpServletResponse response) throws IOException {
-		int statusCode = 500;
-		String errorMessage = "Unknown error";
-		
-		if (e instanceof InvalidTokenException) {
-			statusCode = 401;
-			errorMessage = "Invalid token";
-		} else if (e instanceof UserNotFoundException) {
-			statusCode = 401;
-			errorMessage = "User not found";
-		} else if (e instanceof InvalidUserRoleException) {
-			errorMessage = "Unable to determine user role";
-		}
-		
-		sendErrorResponse(response, errorMessage, statusCode);
-	}
 	
 	private void sendErrorResponse(HttpServletResponse response, String error, int statusCode) throws IOException {
 		response.setHeader("error", error);

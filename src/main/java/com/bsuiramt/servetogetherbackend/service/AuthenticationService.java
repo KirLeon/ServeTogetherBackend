@@ -21,6 +21,6 @@ public class AuthenticationService {
 		}
 		
 		String username = jwtService.getUsernameFromToken(token);
-		if (accountRepository.existsAccountInfoEntityByUsername(username)) throw new UserNotFoundException();
+		if (!accountRepository.existsAccountInfoEntityByUsername(username)) throw new UserNotFoundException();
 	}
 }
