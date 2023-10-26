@@ -19,8 +19,7 @@ public class AuthorizationController {
 	private final AuthenticationService authenticationService;
 	
 	@PostMapping
-	public ResponseEntity<AuthenticatedUserWithToken> authorizeUser(@RequestBody UserAuthenticationRequest authorizationRequest,
-	                                                                @RequestHeader(name = "authToken") String token) {
+	public ResponseEntity<AuthenticatedUserWithToken> authorizeUser(@RequestBody UserAuthenticationRequest authorizationRequest) {
 		try {
 			return ResponseEntity.ok(authenticationService.authenticateUser(authorizationRequest));
 		} catch (UserNotFoundException e) {

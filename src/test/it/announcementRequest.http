@@ -1,0 +1,24 @@
+### Posting announcement as admin
+POST http://localhost:8080/api/v1/admin/announcement
+Content-Type: application/json
+authToken: eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbm9vIiwiaWF0IjoxNjk4MzI1MDYzLCJleHAiOjE2OTg5Mjk4NjN9.kJ1pgZofdyx1JoO3ZL8GoEN7jGPS7I2hn4fktlc7EAh-2fL8EHV0q9aJ4tnjwddTjkOXyo5I_BKoxiD141r3Tw
+
+{
+  "title": "Test announcement 1",
+  "content": "Some cool test",
+  "reward" : 200
+}
+
+### Receiving announcement by its id
+GET http://localhost:8080/api/v1/admin/announcement?id=7
+Content-Type: application/json
+authToken: eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbm9vIiwiaWF0IjoxNjk4MzI1MDYzLCJleHAiOjE2OTg5Mjk4NjN9.kJ1pgZofdyx1JoO3ZL8GoEN7jGPS7I2hn4fktlc7EAh-2fL8EHV0q9aJ4tnjwddTjkOXyo5I_BKoxiD141r3Tw
+
+### Receiving announcement by its id without token
+GET http://localhost:8080/api/v1/admin/announcement?id=7
+Content-Type: application/json
+
+### Receiving announcement that is not exist
+GET http://localhost:8080/api/v1/admin/announcement?id=4
+Content-Type: application/json
+authToken: eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbm9vIiwiaWF0IjoxNjk4MzI1MDYzLCJleHAiOjE2OTg5Mjk4NjN9.kJ1pgZofdyx1JoO3ZL8GoEN7jGPS7I2hn4fktlc7EAh-2fL8EHV0q9aJ4tnjwddTjkOXyo5I_BKoxiD141r3Tw

@@ -1,22 +1,19 @@
 package com.bsuiramt.servetogetherbackend.model;
 
-import com.bsuiramt.servetogetherbackend.model.VolunteerGroup;
 import lombok.*;
+
+import java.util.List;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode
-public class Volunteer {
+public class Admin {
 	
 	private String username;
 	
 	private String phoneNumber;
 	
 	private String password;
-	
-	private VolunteerGroup group;
-	
-	private Integer coins;
 }

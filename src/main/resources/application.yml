@@ -20,4 +20,4 @@ spring:
       ddl-auto: update
     show-sql: true
 jwt:
-  secret: PanasAnanas21
+  secret: 95156dd44418f00301481b3cd0eb4f1712448739eb4163ecf7476ddaa1555b9c12a1baa775e04e687eae753a660b8ff99e43c6d4870aec663eb291c56134472b

@@ -9,5 +9,6 @@ import java.util.Optional;
 @Repository
 public interface AccountInfoRepository extends JpaRepository<AccountInfoEntity, Long> {
 	boolean existsAccountInfoEntityByUsername(String username);
+	boolean existsAccountInfoEntityByPhoneNumber(String phoneNumber);
 	Optional<AccountInfoEntity> findAccountInfoEntityByUsername(String username);
 }

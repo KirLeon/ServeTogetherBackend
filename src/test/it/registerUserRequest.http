@@ -43,3 +43,53 @@ Content-Type: application/json
   "password": "FDjodsf8ndfso#",
   "inviteKey": "112EUh9878G988ggg7"
 }
+
+### Register user
+POST http://localhost:8080/api/v1/registration/user
+Content-Type: application/json
+
+{
+  "username": "kIRlEIN",
+  "phoneNumber": "+3193456718912",
+  "password": "12345678",
+  "inviteKey" : "89d18fb7B8b98bB98B"
+}
+
+### Sign in
+POST http://localhost:8080/api/v1/authorize
+Content-Type: application/json
+
+{
+  "username": "kIRlEIN",
+  "password": "12345678"
+}
+
+### Trying to access some other page without token
+GET http://localhost:8080/swagger-ui/index.html
+
+### Trying to access some other page with token
+GET http://localhost:8080/swagger-ui/index.html
+authToken: eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJrSVJsRUlOIiwiaWF0IjoxNjk4MzEzNzIwLCJleHAiOjE2OTg5MTg1MjB9.m-9YOPLQa4tg-gC0B_792muQFwsrsGJfzNqhvLJ12-Dq6ZyFzTwoUy8qt1DwTS3eoqV70R_5h_gNubLlniekWg
+
+### Register admin
+POST http://localhost:8080/api/v1/registration/user
+Content-Type: application/json
+
+{
+  "username": "adminoo",
+  "phoneNumber": "+310909013910",
+  "password": "adminooo22",
+  "inviteKey" : "as78asdn92887B9F2F"
+}
+
+### Sign in as admin
+POST http://localhost:8080/api/v1/authorize
+Content-Type: application/json
+
+{
+  "username": "adminoo",
+  "password": "adminooo22"
+}
+
+
+

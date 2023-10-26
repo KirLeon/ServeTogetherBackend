@@ -2,14 +2,18 @@ package com.bsuiramt.servetogetherbackend.service;
 
 import com.bsuiramt.servetogetherbackend.dto.request.UserRegistrationRequest;
 import com.bsuiramt.servetogetherbackend.entity.AccountInfoEntity;
+import com.bsuiramt.servetogetherbackend.entity.AdminEntity;
 import com.bsuiramt.servetogetherbackend.entity.InviteKeyEntity;
 import com.bsuiramt.servetogetherbackend.entity.VolunteerEntity;
 import com.bsuiramt.servetogetherbackend.exception.InvalidInviteKeyException;
+import com.bsuiramt.servetogetherbackend.exception.InvalidUserRoleException;
+import com.bsuiramt.servetogetherbackend.exception.PhoneNumberIsAlreadyExists;
 import com.bsuiramt.servetogetherbackend.exception.UsernameIsAlreadyTakenException;
 import com.bsuiramt.servetogetherbackend.mapper.VolunteerMapper;
 import com.bsuiramt.servetogetherbackend.model.UserRole;
 import com.bsuiramt.servetogetherbackend.model.Volunteer;
 import com.bsuiramt.servetogetherbackend.repository.AccountInfoRepository;
+import com.bsuiramt.servetogetherbackend.repository.AdminRepository;
 import com.bsuiramt.servetogetherbackend.repository.InviteKeyRepository;
 import com.bsuiramt.servetogetherbackend.repository.VolunteerRepository;
 import jakarta.transaction.Transactional;
@@ -28,6 +32,8 @@ public class RegistrationService {
 	
 	private final VolunteerRepository volunteerRepository;
 	
+	private final AdminRepository adminRepository;
+	
 	private final AccountInfoRepository accountInfoRepository;
 	
 	private final VolunteerMapper volunteerMapper;
@@ -45,19 +51,27 @@ public class RegistrationService {
 	
 	@Transactional
 	public Volunteer registerUser(UserRegistrationRequest registrationRequest)
-			throws UsernameIsAlreadyTakenException, InvalidInviteKeyException {
+			throws UsernameIsAlreadyTakenException, InvalidInviteKeyException,
+			PhoneNumberIsAlreadyExists, InvalidUserRoleException {
 		
 		Optional<InviteKeyEntity> key = keyRepository.findById(registrationRequest.inviteKey());
 		if (key.isEmpty() || key.get().isActivated()) throw new InvalidInviteKeyException();
 		
 		if (accountInfoRepository.existsAccountInfoEntityByUsername(registrationRequest.username()))
 			throw new UsernameIsAlreadyTakenException();
+		else if (accountInfoRepository.existsAccountInfoEntityByPhoneNumber(registrationRequest.phoneNumber()))
+			throw new PhoneNumberIsAlreadyExists();
 		
 		AccountInfoEntity accountInfoToSave = new AccountInfoEntity(UserRole.valueOf(key.get().getRole()),
 				registrationRequest.username(), registrationRequest.password(), registrationRequest.phoneNumber());
 		AccountInfoEntity savedAccountInfo = accountInfoRepository.save(accountInfoToSave);
 		
-		volunteerRepository.save(new VolunteerEntity(savedAccountInfo, null, 0));
+		switch (savedAccountInfo.getRole()) {
+			case ADMIN -> adminRepository.save(new AdminEntity(savedAccountInfo));
+			case VOLUNTEER -> volunteerRepository.save(new VolunteerEntity(savedAccountInfo, null, 0));
+			default -> throw new InvalidUserRoleException();
+		}
+		
 		
 		key = keyRepository.findById(registrationRequest.inviteKey());
 		if (key.isEmpty() || key.get().isActivated()) throw new InvalidInviteKeyException();
