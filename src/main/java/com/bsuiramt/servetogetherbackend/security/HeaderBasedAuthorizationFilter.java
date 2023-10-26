@@ -49,6 +49,7 @@ public class HeaderBasedAuthorizationFilter extends OncePerRequestFilter {
 	private boolean urlWithoutAuthentication(String url) {
 		String apiRegexAuthorize = "/api/v1/authorize.*";
 		String apiRegexRegister = "/api/v1/registration.*";
-		return url.matches(apiRegexAuthorize) || url.matches(apiRegexRegister);
+		String swaggerDocsTestRegex = "/swagger-ui.*";
+		return url.matches(apiRegexAuthorize) || url.matches(apiRegexRegister) || url.matches(swaggerDocsTestRegex);
 	}
 }
