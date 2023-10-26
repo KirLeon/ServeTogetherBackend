@@ -8,11 +8,12 @@ CREATE TABLE IF NOT EXISTS "market_items"
 
 CREATE TABLE IF NOT EXISTS "account_info"
 (
-    "id"           BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
-    "role"         TEXT NOT NULL,
-    "username"     TEXT NOT NULL UNIQUE,
-    "password"     TEXT NOT NULL,
-    "phone_number" TEXT NOT NULL UNIQUE
+    "id"             BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+    "role"           TEXT NOT NULL,
+    "username"       TEXT NOT NULL UNIQUE,
+    "password"       TEXT NOT NULL,
+    "phone_number"   TEXT NOT NULL UNIQUE,
+    "registry_token" TEXT NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS "volunteers"

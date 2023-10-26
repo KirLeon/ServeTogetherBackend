@@ -5,8 +5,10 @@ import com.bsuiramt.servetogetherbackend.dto.response.AnnouncementDTO;
 import com.bsuiramt.servetogetherbackend.entity.AccountInfoEntity;
 import com.bsuiramt.servetogetherbackend.entity.AdminEntity;
 import com.bsuiramt.servetogetherbackend.entity.AnnouncementEntity;
+import com.bsuiramt.servetogetherbackend.exception.AttemptToDeleteAnnouncementInProgressException;
 import com.bsuiramt.servetogetherbackend.exception.UserNotFoundException;
 import com.bsuiramt.servetogetherbackend.mapper.AnnouncementMapper;
+import com.bsuiramt.servetogetherbackend.model.AnnouncementStatus;
 import com.bsuiramt.servetogetherbackend.repository.AccountInfoRepository;
 import com.bsuiramt.servetogetherbackend.repository.AdminRepository;
 import com.bsuiramt.servetogetherbackend.repository.AnnouncementRepository;
@@ -28,7 +30,7 @@ public class AnnouncementService {
 	
 	private final AdminRepository adminRepository;
 	
-	private final AuthenticationService authenticationService;
+	private final AuthorizationService authorizationService;
 	
 	private final AnnouncementMapper announcementMapper;
 	
@@ -56,11 +58,11 @@ public class AnnouncementService {
 	@Transactional
 	public AnnouncementDTO addAnnouncement(CreateAnnouncementRequest createRequest, String token) throws UserNotFoundException {
 		
-		String username = authenticationService.getUsername(token);
+		String username = authorizationService.getUsername(token);
 		
 		Optional<AccountInfoEntity> foundAccount = accountRepository.findAccountInfoEntityByUsername(username);
 		if (foundAccount.isEmpty()) throw new UserNotFoundException();
-		
+
 //		Optional<AdminEntity> admin = adminRepository.findAdminEntityByInfo(foundAccount.get());
 		Optional<AdminEntity> admin = adminRepository.findAdminEntityByInfoId(foundAccount.get().getId());
 		if (admin.isEmpty()) throw new UserNotFoundException();
@@ -71,5 +73,15 @@ public class AnnouncementService {
 		
 		AnnouncementEntity savedAnnouncement = announcementRepository.save(announcementEntity);
 		return announcementMapper.entityToDTO(savedAnnouncement);
+	}
+	
+	public Optional<AnnouncementDTO> deleteAnnouncement(Long id) throws AttemptToDeleteAnnouncementInProgressException {
+		Optional<AnnouncementEntity> foundAnnouncement = announcementRepository.findById(id);
+		if (foundAnnouncement.isEmpty()) return Optional.empty();
+		else if (foundAnnouncement.get().getStatus().equals(AnnouncementStatus.IN_PROGRESS))
+			throw new AttemptToDeleteAnnouncementInProgressException();
+		
+		announcementRepository.deleteById(id);
+		return foundAnnouncement.map(announcementMapper::entityToDTO);
 	}
 }

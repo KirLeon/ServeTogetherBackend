@@ -2,6 +2,7 @@ package com.bsuiramt.servetogetherbackend.controller;
 
 import com.bsuiramt.servetogetherbackend.dto.request.CreateAnnouncementRequest;
 import com.bsuiramt.servetogetherbackend.dto.response.AnnouncementDTO;
+import com.bsuiramt.servetogetherbackend.exception.AttemptToDeleteAnnouncementInProgressException;
 import com.bsuiramt.servetogetherbackend.exception.UserNotFoundException;
 import com.bsuiramt.servetogetherbackend.service.AnnouncementService;
 import lombok.RequiredArgsConstructor;
@@ -40,8 +41,27 @@ public class AdminController {
 				.orElseGet(() -> ResponseEntity.notFound().build());
 	}
 	
-	@PostMapping("/announcement/all")
+	@GetMapping("/announcement/title")
+	public ResponseEntity<List<AnnouncementDTO>> getAnnouncementsByTitle(@RequestParam String title) {
+		return ResponseEntity.ok(announcementService.getAllAnnouncementsByTitle(title));
+	}
+	
+	@GetMapping("/announcement/all")
 	public ResponseEntity<List<AnnouncementDTO>> getAllAnnouncements() {
 		return ResponseEntity.ok(announcementService.getAllAnnouncements());
+	}
+	
+	@DeleteMapping("/announcement")
+	public ResponseEntity<AnnouncementDTO> deleteAnnouncement(@RequestParam Long id) {
+		try {
+			return announcementService.deleteAnnouncement(id)
+					.map(ResponseEntity::ok)
+					.orElseGet(() -> ResponseEntity.notFound().build());
+		} catch (AttemptToDeleteAnnouncementInProgressException e) {
+			return ResponseEntity
+					.status(HttpStatus.BAD_REQUEST)
+					.header("error", "this announcement is currently in progress")
+					.build();
+		}
 	}
 }

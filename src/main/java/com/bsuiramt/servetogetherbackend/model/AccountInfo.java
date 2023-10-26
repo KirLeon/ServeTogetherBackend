@@ -15,4 +15,5 @@ public class AccountInfo {
 	private String username;
 	private String password;
 	private String phoneNumber;
+	private String registryToken;
 }

@@ -34,4 +34,6 @@ public class AccountInfoEntity {
 	
 	@Column(unique = true)
 	private String phoneNumber;
+	
+	private String registryToken;
 }
