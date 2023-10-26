@@ -23,7 +23,7 @@ public class JwtService {
 	
 	private String doGenerateToken(Map<String, Object> claims, String subject) {
 		Date now = new Date();
-		Date validity = new Date(now.getTime() + 7);
+		Date validity = new Date(now.getTime() + 7 * 24 * 60 * 60 * 1000);
 		
 		return Jwts.builder()
 				.setClaims(claims)
@@ -57,6 +57,6 @@ public class JwtService {
 	
 	public boolean isTokenExpired(String token) {
 		final Date expiration = getExpirationDateFromToken(token);
-		return expiration != null || expiration.before(new Date());
+		return expiration == null || expiration.before(new Date());
 	}
 }
